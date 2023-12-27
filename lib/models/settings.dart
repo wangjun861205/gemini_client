@@ -1,32 +1,58 @@
-class SafetySetting {
-  final String category;
-  final String threshold;
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/foundation.dart';
+part 'settings.freezed.dart';
+part 'settings.g.dart';
 
-  const SafetySetting({required this.category, required this.threshold});
+@freezed
+class SafetySetting with _$SafetySetting {
+  const factory SafetySetting({
+    required String category,
+    required String threshold,
+  }) = _SafetySetting;
+
+  factory SafetySetting.fromJson(Map<String, Object?> json) =>
+      _$SafetySettingFromJson(json);
 }
 
-class GenerationConfig {
-  final List<String> stopSequences;
-  final double temperature;
-  final int maxOutputTokens;
-  final double topP;
-  final int topK;
+@freezed
+class GenerationConfig with _$GenerationConfig {
+  const factory GenerationConfig({
+    required List<String> stopSequences,
+    double? temperature,
+    int? maxOutputTokens,
+    double? topP,
+    int? topK,
+  }) = _GenerationConfig;
 
-  const GenerationConfig(
-      {required this.stopSequences,
-      required this.temperature,
-      required this.maxOutputTokens,
-      required this.topP,
-      required this.topK});
+  factory GenerationConfig.fromJson(Map<String, Object?> json) =>
+      _$GenerationConfigFromJson(json);
+
+  factory GenerationConfig.empty() => const GenerationConfig(stopSequences: []);
 }
 
-class Settings {
-  final String apiKey;
-  final List<SafetySetting> safetySettings;
-  final GenerationConfig generationConfig;
+@freezed
+class Settings with _$Settings {
+  const factory Settings({
+    required String apiKey,
+    required List<SafetySetting> safetySettings,
+    GenerationConfig? generationConfig,
+  }) = _Settings;
 
-  const Settings(
-      {required this.apiKey,
-      required this.safetySettings,
-      required this.generationConfig});
+  factory Settings.fromJson(Map<String, Object?> json) =>
+      _$SettingsFromJson(json);
+
+  factory Settings.empty() => const Settings(apiKey: "", safetySettings: []);
+
+  Map<String, Object?> jsonSerialize() {
+    var json = toJson();
+    if (generationConfig != null &&
+        generationConfig!.stopSequences.isEmpty &&
+        generationConfig!.temperature == null &&
+        generationConfig!.maxOutputTokens == null &&
+        generationConfig!.topP == null &&
+        generationConfig!.topK == null) {
+      json.remove("generationConfig");
+    }
+    return json;
+  }
 }
