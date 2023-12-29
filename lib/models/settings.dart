@@ -32,6 +32,7 @@ class GenerationConfig with _$GenerationConfig {
 
 @freezed
 class Settings with _$Settings {
+  const Settings._();
   const factory Settings({
     required String apiKey,
     required List<SafetySetting> safetySettings,

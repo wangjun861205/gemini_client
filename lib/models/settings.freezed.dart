@@ -558,12 +558,13 @@ class __$$SettingsImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$SettingsImpl with DiagnosticableTreeMixin implements _Settings {
+class _$SettingsImpl extends _Settings with DiagnosticableTreeMixin {
   const _$SettingsImpl(
       {required this.apiKey,
       required final List<SafetySetting> safetySettings,
       this.generationConfig})
-      : _safetySettings = safetySettings;
+      : _safetySettings = safetySettings,
+        super._();
 
   factory _$SettingsImpl.fromJson(Map<String, dynamic> json) =>
       _$$SettingsImplFromJson(json);
@@ -627,11 +628,12 @@ class _$SettingsImpl with DiagnosticableTreeMixin implements _Settings {
   }
 }
 
-abstract class _Settings implements Settings {
+abstract class _Settings extends Settings {
   const factory _Settings(
       {required final String apiKey,
       required final List<SafetySetting> safetySettings,
       final GenerationConfig? generationConfig}) = _$SettingsImpl;
+  const _Settings._() : super._();
 
   factory _Settings.fromJson(Map<String, dynamic> json) =
       _$SettingsImpl.fromJson;
