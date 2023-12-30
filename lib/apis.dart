@@ -1,71 +1,159 @@
 import "dart:convert";
+import "package:freezed_annotation/freezed_annotation.dart";
 import "package:http/http.dart";
+part "apis.freezed.dart";
+part "apis.g.dart";
 
-class Part {
+abstract class Part {
+  const Part();
+
+  factory Part.fromJson(Map<String, Object?> json) {
+    if (json["text"] != null) {
+      return TextPart.fromJson(json);
+    }
+    return InlineDataPart.fromJson(json);
+  }
+
+  Map<String, Object?> toJson() {
+    if (this is TextPart) {
+      return (this as TextPart).toJson();
+    }
+    return (this as InlineDataPart).toJson();
+  }
+}
+
+class TextPart extends Part {
   final String text;
+  TextPart({required this.text}) : super();
 
-  const Part({required this.text});
+  factory TextPart.fromJson(Map<String, Object?> json) =>
+      TextPart(text: json["text"] as String);
+
+  @override
+  Map<String, Object?> toJson() => {"text": text};
 }
 
-class Content {
-  final List<Part> parts;
-  final String? role;
+class InlineData {
+  final String mimeType;
+  final String data;
+  const InlineData({
+    required this.mimeType,
+    required this.data,
+  });
 
-  const Content({required this.parts, this.role});
+  factory InlineData.fromJson(Map<String, Object?> json) => InlineData(
+      mimeType: json["mime_type"] as String, data: json["data"] as String);
+
+  Map<String, Object?> toJson() => {"mime_type": mimeType, "data": data};
 }
 
-class GenerateContentRequest {
-  final List<Content> contents;
+class InlineDataPart extends Part {
+  final InlineData inlineData;
+  InlineDataPart({required this.inlineData});
 
-  const GenerateContentRequest({required this.contents});
+  factory InlineDataPart.fromJson(Map<String, Object?> json) => InlineDataPart(
+      inlineData:
+          InlineData.fromJson(json["inline_data"] as Map<String, Object?>));
+
+  @override
+  Map<String, Object?> toJson() => {"inline_data": inlineData.toJson()};
 }
 
-class SafetyRating {
-  final String cateogry;
-  final String probability;
+@freezed
+class Content with _$Content {
+  const factory Content({
+    required List<Part> parts,
+    String? role,
+  }) = _Content;
 
-  const SafetyRating({required this.cateogry, required this.probability});
+  factory Content.fromJson(Map<String, Object?> json) =>
+      _$ContentFromJson(json);
+
+  factory Content.user() => const Content(parts: [], role: "user");
 }
 
-class Candidate {
-  final Content content;
-  final String finishReason;
-  final int index;
-  final List<SafetyRating> safetyRatings;
+@freezed
+class GenerateContentRequest with _$GenerateContentRequest {
+  const factory GenerateContentRequest({
+    required List<Content> contents,
+  }) = _GenerateContentRequest;
 
-  const Candidate(
-      {required this.content,
-      required this.finishReason,
-      required this.index,
-      required this.safetyRatings});
+  factory GenerateContentRequest.fromJson(Map<String, Object?> json) =>
+      _$GenerateContentRequestFromJson(json);
 }
 
-class PromptFeedback {
-  final List<SafetyRating> safetyRatings;
+@freezed
+class SafetyRating with _$SafetyRating {
+  const factory SafetyRating({
+    required String category,
+    required String probability,
+  }) = _SafetyRating;
 
-  const PromptFeedback({required this.safetyRatings});
+  factory SafetyRating.fromJson(Map<String, Object?> json) =>
+      _$SafetyRatingFromJson(json);
 }
 
-class GenerateContentResponse {
-  final List<Candidate> candidates;
-  final PromptFeedback promptFeedback;
+@freezed
+class Candidate with _$Candidate {
+  const factory Candidate(
+      {required Content content,
+      required String finishReason,
+      required int index,
+      required List<SafetyRating> safetyRatings}) = _Candidate;
 
-  const GenerateContentResponse(
-      {required this.candidates, required this.promptFeedback});
+  factory Candidate.fromJson(Map<String, Object?> json) =>
+      _$CandidateFromJson(json);
 }
 
-Future<String> generateContentSingleText(
+@freezed
+class PromptFeedback with _$PromptFeedback {
+  const factory PromptFeedback({required List<SafetyRating> safetyRatings}) =
+      _PromptFeedback;
+
+  factory PromptFeedback.fromJson(Map<String, Object?> json) =>
+      _$PromptFeedbackFromJson(json);
+}
+
+@freezed
+class GenerateContentResponse with _$GenerateContentResponse {
+  const factory GenerateContentResponse(
+      {required List<Candidate> candidates,
+      required PromptFeedback promptFeedback}) = _GenerateContentResponse;
+
+  factory GenerateContentResponse.fromJson(Map<String, Object?> json) =>
+      _$GenerateContentResponseFromJson(json);
+}
+
+Future<Content> generateContentSingleText(
     {required String apiKey, required String text}) async {
   final url = Uri.parse(
       "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=$apiKey");
   final resp = await post(url,
       headers: {"Content-Type": "application/json"},
       body: jsonEncode(GenerateContentRequest(contents: [
-        Content(parts: [Part(text: text)])
+        Content(parts: [TextPart(text: text)])
       ])));
   if (resp.statusCode != 200) {
     throw Exception("Failed to generate content: ${resp.body}");
   }
-  GenerateContentResponse data = jsonDecode(resp.body);
-  return data.candidates[0].content.parts[0].text;
+  final Map<String, Object?> json = jsonDecode(resp.body);
+  final data = GenerateContentResponse.fromJson(json);
+  return data.candidates[0].content;
+}
+
+Future<Content> generateContent(
+    {required String model,
+    required String apiKey,
+    required List<Content> contents}) async {
+  final url = Uri.parse(
+      "https://generativelanguage.googleapis.com/v1beta/models/$model:generateContent?key=$apiKey");
+  final resp = await post(url,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(GenerateContentRequest(contents: contents)));
+  if (resp.statusCode != 200) {
+    throw Exception("Failed to generate content: ${resp.body}");
+  }
+  final Map<String, Object?> json = jsonDecode(resp.body);
+  final data = GenerateContentResponse.fromJson(json);
+  return data.candidates[0].content;
 }

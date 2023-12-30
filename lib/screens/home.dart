@@ -1,44 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:gemini_client/apis.dart';
+import 'package:gemini_client/blocs/conversation.dart';
+import 'package:gemini_client/blocs/model.dart';
 import 'package:gemini_client/blocs/settings.dart';
+import 'package:gemini_client/components/message_list.dart';
+import 'package:gemini_client/components/multiparts_input_group.dart';
+import 'package:gemini_client/components/multiparts_list.dart';
 
 class HomeScreenState extends State<HomeScreen> {
-  String text = "";
-  List<String> contents = [];
+  List<Content> contents = [];
   HomeScreenState() : super();
 
   @override
   Widget build(BuildContext context) {
-    final settings = BlocProvider.of<SettingsCubit>(context);
-    final textCtrl = TextEditingController(text: text);
-    return Column(children: [
-      SizedBox(
-          width: MediaQuery.of(context).size.width * 0.8,
-          height: MediaQuery.of(context).size.height * 0.7,
-          child: ListView.builder(
-              itemCount: contents.length,
-              itemBuilder: (context, i) => Text(contents[i]))),
-      SizedBox(
-          width: MediaQuery.of(context).size.width * 0.8,
-          height: MediaQuery.of(context).size.height * 0.2,
-          child: TextField(
-            controller: textCtrl,
-            maxLines: 10,
-            onChanged: (val) => setState(() {
-              () => text = val;
-            }),
-          )),
-      Align(
-          child: TextButton(
-              onPressed: () async {
-                final resp = await generateContentSingleText(
-                    apiKey: settings.state.apiKey, text: text);
-                setState(() => contents = [...contents, resp]);
-                textCtrl.clear();
-              },
-              child: const Text("Send")))
-    ]);
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text("Home"),
+          centerTitle: true,
+        ),
+        body: MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (_) => ContentsCubit(contents: [])),
+              BlocProvider(
+                  create: (_) => ContentCubit(content: Content.user())),
+              BlocProvider(create: (_) => ModelCubit())
+            ],
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      height: MediaQuery.of(context).size.height * 0.7,
+                      child: const MessageList()),
+                  SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      height: MediaQuery.of(context).size.height * 0.2,
+                      child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(flex: 4, child: MultipartsList()),
+                            Expanded(flex: 6, child: MultipartsInputGroup())
+                          ])),
+                ])));
   }
 }
 
