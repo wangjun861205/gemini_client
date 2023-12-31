@@ -6,43 +6,43 @@ class SettingsCubit extends Cubit<Settings> {
 
   void setAPIKey(String apiKey) => emit(state.copyWith(apiKey: apiKey));
 
-  void addSafetySetting(SafetySetting setting) =>
-      emit(state.copyWith(safetySettings: [...state.safetySettings, setting]));
+  void setHarassmentThreshold(Threshold threshold) => emit(state.copyWith(
+      safetySettings:
+          state.safetySettings.copyWith(harassmentThreshold: threshold)));
 
-  void removeSafetySetting(SafetySetting setting) => emit(state.copyWith(
-      safetySettings: state.safetySettings
-          .where((s) => s.category != setting.category)
-          .toList()));
+  void setHateSpeechThreshold(Threshold threshold) => emit(state.copyWith(
+      safetySettings:
+          state.safetySettings.copyWith(hateSpeechThreshold: threshold)));
 
-  void addStopSequences(String s) => emit(state.copyWith(
-          generationConfig: (state.generationConfig ?? GenerationConfig.empty())
-              .copyWith(stopSequences: [
-        ...(state.generationConfig ?? GenerationConfig.empty()).stopSequences,
-        s
+  void setSexuallyExplicitThreshold(Threshold threshold) => emit(state.copyWith(
+      safetySettings:
+          state.safetySettings.copyWith(sexuallyExplicitThreshold: threshold)));
+
+  void setDangerousThreshold(Threshold threshold) => emit(state.copyWith(
+      safetySettings:
+          state.safetySettings.copyWith(dangerousThreshold: threshold)));
+
+  void addStopSequence(String s) => emit(state.copyWith(
+      generationConfig: state.generationConfig.copyWith(
+          stopSequences: [...state.generationConfig.stopSequences, s])));
+
+  void removeStopSequence(int i) => emit(state.copyWith(
+          generationConfig: state.generationConfig.copyWith(stopSequences: [
+        ...state.generationConfig.stopSequences.sublist(0, i),
+        ...state.generationConfig.stopSequences.sublist(i + 1)
       ])));
 
-  void removeStopSequences(String s) => emit(state.copyWith(
-      generationConfig: (state.generationConfig ?? GenerationConfig.empty())
-          .copyWith(
-              stopSequences:
-                  (state.generationConfig ?? GenerationConfig.empty())
-                      .stopSequences
-                      .where((sign) => sign != s)
-                      .toList())));
+  void setTemperature(double temperature) => emit(state.copyWith(
+      generationConfig:
+          state.generationConfig.copyWith(temperature: temperature)));
 
-  void setTemperature(double? temperature) => emit(state.copyWith(
-      generationConfig: (state.generationConfig ?? GenerationConfig.empty())
-          .copyWith(temperature: temperature)));
+  void setMaxOutputTokens(int maxOutputTokens) => emit(state.copyWith(
+      generationConfig:
+          state.generationConfig.copyWith(maxOutputTokens: maxOutputTokens)));
 
-  void setMaxOutputTokens(int? maxOutputTokens) => emit(state.copyWith(
-      generationConfig: (state.generationConfig ?? GenerationConfig.empty())
-          .copyWith(maxOutputTokens: maxOutputTokens)));
+  void setTopP(double topP) => emit(state.copyWith(
+      generationConfig: state.generationConfig.copyWith(topP: topP)));
 
-  void setTopP(double? topP) => emit(state.copyWith(
-      generationConfig: (state.generationConfig ?? GenerationConfig.empty())
-          .copyWith(topP: topP)));
-
-  void setTopK(int? topK) => emit(state.copyWith(
-      generationConfig: (state.generationConfig ?? GenerationConfig.empty())
-          .copyWith(topK: topK)));
+  void setTopK(int topK) => emit(state.copyWith(
+      generationConfig: state.generationConfig.copyWith(topK: topK)));
 }

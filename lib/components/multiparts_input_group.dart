@@ -64,7 +64,7 @@ class MultipartsInputGroup extends StatelessWidget {
                   content.setParts([]);
                   final resp = await generateContent(
                       model: model.state,
-                      apiKey: settings.state.apiKey,
+                      settings: settings.state,
                       contents: history.state);
                   history.pushContent(resp);
                 },

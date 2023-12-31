@@ -14,173 +14,6 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-SafetySetting _$SafetySettingFromJson(Map<String, dynamic> json) {
-  return _SafetySetting.fromJson(json);
-}
-
-/// @nodoc
-mixin _$SafetySetting {
-  String get category => throw _privateConstructorUsedError;
-  String get threshold => throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $SafetySettingCopyWith<SafetySetting> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $SafetySettingCopyWith<$Res> {
-  factory $SafetySettingCopyWith(
-          SafetySetting value, $Res Function(SafetySetting) then) =
-      _$SafetySettingCopyWithImpl<$Res, SafetySetting>;
-  @useResult
-  $Res call({String category, String threshold});
-}
-
-/// @nodoc
-class _$SafetySettingCopyWithImpl<$Res, $Val extends SafetySetting>
-    implements $SafetySettingCopyWith<$Res> {
-  _$SafetySettingCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? category = null,
-    Object? threshold = null,
-  }) {
-    return _then(_value.copyWith(
-      category: null == category
-          ? _value.category
-          : category // ignore: cast_nullable_to_non_nullable
-              as String,
-      threshold: null == threshold
-          ? _value.threshold
-          : threshold // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$SafetySettingImplCopyWith<$Res>
-    implements $SafetySettingCopyWith<$Res> {
-  factory _$$SafetySettingImplCopyWith(
-          _$SafetySettingImpl value, $Res Function(_$SafetySettingImpl) then) =
-      __$$SafetySettingImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({String category, String threshold});
-}
-
-/// @nodoc
-class __$$SafetySettingImplCopyWithImpl<$Res>
-    extends _$SafetySettingCopyWithImpl<$Res, _$SafetySettingImpl>
-    implements _$$SafetySettingImplCopyWith<$Res> {
-  __$$SafetySettingImplCopyWithImpl(
-      _$SafetySettingImpl _value, $Res Function(_$SafetySettingImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? category = null,
-    Object? threshold = null,
-  }) {
-    return _then(_$SafetySettingImpl(
-      category: null == category
-          ? _value.category
-          : category // ignore: cast_nullable_to_non_nullable
-              as String,
-      threshold: null == threshold
-          ? _value.threshold
-          : threshold // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$SafetySettingImpl
-    with DiagnosticableTreeMixin
-    implements _SafetySetting {
-  const _$SafetySettingImpl({required this.category, required this.threshold});
-
-  factory _$SafetySettingImpl.fromJson(Map<String, dynamic> json) =>
-      _$$SafetySettingImplFromJson(json);
-
-  @override
-  final String category;
-  @override
-  final String threshold;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'SafetySetting(category: $category, threshold: $threshold)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'SafetySetting'))
-      ..add(DiagnosticsProperty('category', category))
-      ..add(DiagnosticsProperty('threshold', threshold));
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$SafetySettingImpl &&
-            (identical(other.category, category) ||
-                other.category == category) &&
-            (identical(other.threshold, threshold) ||
-                other.threshold == threshold));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, category, threshold);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$SafetySettingImplCopyWith<_$SafetySettingImpl> get copyWith =>
-      __$$SafetySettingImplCopyWithImpl<_$SafetySettingImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$SafetySettingImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _SafetySetting implements SafetySetting {
-  const factory _SafetySetting(
-      {required final String category,
-      required final String threshold}) = _$SafetySettingImpl;
-
-  factory _SafetySetting.fromJson(Map<String, dynamic> json) =
-      _$SafetySettingImpl.fromJson;
-
-  @override
-  String get category;
-  @override
-  String get threshold;
-  @override
-  @JsonKey(ignore: true)
-  _$$SafetySettingImplCopyWith<_$SafetySettingImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
 GenerationConfig _$GenerationConfigFromJson(Map<String, dynamic> json) {
   return _GenerationConfig.fromJson(json);
 }
@@ -188,10 +21,10 @@ GenerationConfig _$GenerationConfigFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$GenerationConfig {
   List<String> get stopSequences => throw _privateConstructorUsedError;
-  double? get temperature => throw _privateConstructorUsedError;
-  int? get maxOutputTokens => throw _privateConstructorUsedError;
-  double? get topP => throw _privateConstructorUsedError;
-  int? get topK => throw _privateConstructorUsedError;
+  double get temperature => throw _privateConstructorUsedError;
+  int get maxOutputTokens => throw _privateConstructorUsedError;
+  double get topP => throw _privateConstructorUsedError;
+  int get topK => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -207,10 +40,10 @@ abstract class $GenerationConfigCopyWith<$Res> {
   @useResult
   $Res call(
       {List<String> stopSequences,
-      double? temperature,
-      int? maxOutputTokens,
-      double? topP,
-      int? topK});
+      double temperature,
+      int maxOutputTokens,
+      double topP,
+      int topK});
 }
 
 /// @nodoc
@@ -227,32 +60,32 @@ class _$GenerationConfigCopyWithImpl<$Res, $Val extends GenerationConfig>
   @override
   $Res call({
     Object? stopSequences = null,
-    Object? temperature = freezed,
-    Object? maxOutputTokens = freezed,
-    Object? topP = freezed,
-    Object? topK = freezed,
+    Object? temperature = null,
+    Object? maxOutputTokens = null,
+    Object? topP = null,
+    Object? topK = null,
   }) {
     return _then(_value.copyWith(
       stopSequences: null == stopSequences
           ? _value.stopSequences
           : stopSequences // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      temperature: freezed == temperature
+      temperature: null == temperature
           ? _value.temperature
           : temperature // ignore: cast_nullable_to_non_nullable
-              as double?,
-      maxOutputTokens: freezed == maxOutputTokens
+              as double,
+      maxOutputTokens: null == maxOutputTokens
           ? _value.maxOutputTokens
           : maxOutputTokens // ignore: cast_nullable_to_non_nullable
-              as int?,
-      topP: freezed == topP
+              as int,
+      topP: null == topP
           ? _value.topP
           : topP // ignore: cast_nullable_to_non_nullable
-              as double?,
-      topK: freezed == topK
+              as double,
+      topK: null == topK
           ? _value.topK
           : topK // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
     ) as $Val);
   }
 }
@@ -267,10 +100,10 @@ abstract class _$$GenerationConfigImplCopyWith<$Res>
   @useResult
   $Res call(
       {List<String> stopSequences,
-      double? temperature,
-      int? maxOutputTokens,
-      double? topP,
-      int? topK});
+      double temperature,
+      int maxOutputTokens,
+      double topP,
+      int topK});
 }
 
 /// @nodoc
@@ -285,32 +118,32 @@ class __$$GenerationConfigImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? stopSequences = null,
-    Object? temperature = freezed,
-    Object? maxOutputTokens = freezed,
-    Object? topP = freezed,
-    Object? topK = freezed,
+    Object? temperature = null,
+    Object? maxOutputTokens = null,
+    Object? topP = null,
+    Object? topK = null,
   }) {
     return _then(_$GenerationConfigImpl(
       stopSequences: null == stopSequences
           ? _value._stopSequences
           : stopSequences // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      temperature: freezed == temperature
+      temperature: null == temperature
           ? _value.temperature
           : temperature // ignore: cast_nullable_to_non_nullable
-              as double?,
-      maxOutputTokens: freezed == maxOutputTokens
+              as double,
+      maxOutputTokens: null == maxOutputTokens
           ? _value.maxOutputTokens
           : maxOutputTokens // ignore: cast_nullable_to_non_nullable
-              as int?,
-      topP: freezed == topP
+              as int,
+      topP: null == topP
           ? _value.topP
           : topP // ignore: cast_nullable_to_non_nullable
-              as double?,
-      topK: freezed == topK
+              as double,
+      topK: null == topK
           ? _value.topK
           : topK // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
     ));
   }
 }
@@ -322,10 +155,10 @@ class _$GenerationConfigImpl
     implements _GenerationConfig {
   const _$GenerationConfigImpl(
       {required final List<String> stopSequences,
-      this.temperature,
-      this.maxOutputTokens,
-      this.topP,
-      this.topK})
+      required this.temperature,
+      required this.maxOutputTokens,
+      required this.topP,
+      required this.topK})
       : _stopSequences = stopSequences;
 
   factory _$GenerationConfigImpl.fromJson(Map<String, dynamic> json) =>
@@ -340,13 +173,13 @@ class _$GenerationConfigImpl
   }
 
   @override
-  final double? temperature;
+  final double temperature;
   @override
-  final int? maxOutputTokens;
+  final int maxOutputTokens;
   @override
-  final double? topP;
+  final double topP;
   @override
-  final int? topK;
+  final int topK;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -408,10 +241,10 @@ class _$GenerationConfigImpl
 abstract class _GenerationConfig implements GenerationConfig {
   const factory _GenerationConfig(
       {required final List<String> stopSequences,
-      final double? temperature,
-      final int? maxOutputTokens,
-      final double? topP,
-      final int? topK}) = _$GenerationConfigImpl;
+      required final double temperature,
+      required final int maxOutputTokens,
+      required final double topP,
+      required final int topK}) = _$GenerationConfigImpl;
 
   factory _GenerationConfig.fromJson(Map<String, dynamic> json) =
       _$GenerationConfigImpl.fromJson;
@@ -419,13 +252,13 @@ abstract class _GenerationConfig implements GenerationConfig {
   @override
   List<String> get stopSequences;
   @override
-  double? get temperature;
+  double get temperature;
   @override
-  int? get maxOutputTokens;
+  int get maxOutputTokens;
   @override
-  double? get topP;
+  double get topP;
   @override
-  int? get topK;
+  int get topK;
   @override
   @JsonKey(ignore: true)
   _$$GenerationConfigImplCopyWith<_$GenerationConfigImpl> get copyWith =>
@@ -439,8 +272,8 @@ Settings _$SettingsFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Settings {
   String get apiKey => throw _privateConstructorUsedError;
-  List<SafetySetting> get safetySettings => throw _privateConstructorUsedError;
-  GenerationConfig? get generationConfig => throw _privateConstructorUsedError;
+  SafetySettings get safetySettings => throw _privateConstructorUsedError;
+  GenerationConfig get generationConfig => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -455,10 +288,10 @@ abstract class $SettingsCopyWith<$Res> {
   @useResult
   $Res call(
       {String apiKey,
-      List<SafetySetting> safetySettings,
-      GenerationConfig? generationConfig});
+      SafetySettings safetySettings,
+      GenerationConfig generationConfig});
 
-  $GenerationConfigCopyWith<$Res>? get generationConfig;
+  $GenerationConfigCopyWith<$Res> get generationConfig;
 }
 
 /// @nodoc
@@ -476,7 +309,7 @@ class _$SettingsCopyWithImpl<$Res, $Val extends Settings>
   $Res call({
     Object? apiKey = null,
     Object? safetySettings = null,
-    Object? generationConfig = freezed,
+    Object? generationConfig = null,
   }) {
     return _then(_value.copyWith(
       apiKey: null == apiKey
@@ -486,22 +319,18 @@ class _$SettingsCopyWithImpl<$Res, $Val extends Settings>
       safetySettings: null == safetySettings
           ? _value.safetySettings
           : safetySettings // ignore: cast_nullable_to_non_nullable
-              as List<SafetySetting>,
-      generationConfig: freezed == generationConfig
+              as SafetySettings,
+      generationConfig: null == generationConfig
           ? _value.generationConfig
           : generationConfig // ignore: cast_nullable_to_non_nullable
-              as GenerationConfig?,
+              as GenerationConfig,
     ) as $Val);
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $GenerationConfigCopyWith<$Res>? get generationConfig {
-    if (_value.generationConfig == null) {
-      return null;
-    }
-
-    return $GenerationConfigCopyWith<$Res>(_value.generationConfig!, (value) {
+  $GenerationConfigCopyWith<$Res> get generationConfig {
+    return $GenerationConfigCopyWith<$Res>(_value.generationConfig, (value) {
       return _then(_value.copyWith(generationConfig: value) as $Val);
     });
   }
@@ -517,11 +346,11 @@ abstract class _$$SettingsImplCopyWith<$Res>
   @useResult
   $Res call(
       {String apiKey,
-      List<SafetySetting> safetySettings,
-      GenerationConfig? generationConfig});
+      SafetySettings safetySettings,
+      GenerationConfig generationConfig});
 
   @override
-  $GenerationConfigCopyWith<$Res>? get generationConfig;
+  $GenerationConfigCopyWith<$Res> get generationConfig;
 }
 
 /// @nodoc
@@ -537,7 +366,7 @@ class __$$SettingsImplCopyWithImpl<$Res>
   $Res call({
     Object? apiKey = null,
     Object? safetySettings = null,
-    Object? generationConfig = freezed,
+    Object? generationConfig = null,
   }) {
     return _then(_$SettingsImpl(
       apiKey: null == apiKey
@@ -545,13 +374,13 @@ class __$$SettingsImplCopyWithImpl<$Res>
           : apiKey // ignore: cast_nullable_to_non_nullable
               as String,
       safetySettings: null == safetySettings
-          ? _value._safetySettings
+          ? _value.safetySettings
           : safetySettings // ignore: cast_nullable_to_non_nullable
-              as List<SafetySetting>,
-      generationConfig: freezed == generationConfig
+              as SafetySettings,
+      generationConfig: null == generationConfig
           ? _value.generationConfig
           : generationConfig // ignore: cast_nullable_to_non_nullable
-              as GenerationConfig?,
+              as GenerationConfig,
     ));
   }
 }
@@ -561,26 +390,19 @@ class __$$SettingsImplCopyWithImpl<$Res>
 class _$SettingsImpl extends _Settings with DiagnosticableTreeMixin {
   const _$SettingsImpl(
       {required this.apiKey,
-      required final List<SafetySetting> safetySettings,
-      this.generationConfig})
-      : _safetySettings = safetySettings,
-        super._();
+      required this.safetySettings,
+      required this.generationConfig})
+      : super._();
 
   factory _$SettingsImpl.fromJson(Map<String, dynamic> json) =>
       _$$SettingsImplFromJson(json);
 
   @override
   final String apiKey;
-  final List<SafetySetting> _safetySettings;
   @override
-  List<SafetySetting> get safetySettings {
-    if (_safetySettings is EqualUnmodifiableListView) return _safetySettings;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_safetySettings);
-  }
-
+  final SafetySettings safetySettings;
   @override
-  final GenerationConfig? generationConfig;
+  final GenerationConfig generationConfig;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -603,16 +425,16 @@ class _$SettingsImpl extends _Settings with DiagnosticableTreeMixin {
         (other.runtimeType == runtimeType &&
             other is _$SettingsImpl &&
             (identical(other.apiKey, apiKey) || other.apiKey == apiKey) &&
-            const DeepCollectionEquality()
-                .equals(other._safetySettings, _safetySettings) &&
+            (identical(other.safetySettings, safetySettings) ||
+                other.safetySettings == safetySettings) &&
             (identical(other.generationConfig, generationConfig) ||
                 other.generationConfig == generationConfig));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, apiKey,
-      const DeepCollectionEquality().hash(_safetySettings), generationConfig);
+  int get hashCode =>
+      Object.hash(runtimeType, apiKey, safetySettings, generationConfig);
 
   @JsonKey(ignore: true)
   @override
@@ -631,8 +453,8 @@ class _$SettingsImpl extends _Settings with DiagnosticableTreeMixin {
 abstract class _Settings extends Settings {
   const factory _Settings(
       {required final String apiKey,
-      required final List<SafetySetting> safetySettings,
-      final GenerationConfig? generationConfig}) = _$SettingsImpl;
+      required final SafetySettings safetySettings,
+      required final GenerationConfig generationConfig}) = _$SettingsImpl;
   const _Settings._() : super._();
 
   factory _Settings.fromJson(Map<String, dynamic> json) =
@@ -641,9 +463,9 @@ abstract class _Settings extends Settings {
   @override
   String get apiKey;
   @override
-  List<SafetySetting> get safetySettings;
+  SafetySettings get safetySettings;
   @override
-  GenerationConfig? get generationConfig;
+  GenerationConfig get generationConfig;
   @override
   @JsonKey(ignore: true)
   _$$SettingsImplCopyWith<_$SettingsImpl> get copyWith =>

@@ -1,5 +1,7 @@
 import "dart:convert";
+import "package:flutter/foundation.dart";
 import "package:freezed_annotation/freezed_annotation.dart";
+import "package:gemini_client/models/settings.dart";
 import "package:http/http.dart";
 part "apis.freezed.dart";
 part "apis.g.dart";
@@ -72,14 +74,38 @@ class Content with _$Content {
   factory Content.user() => const Content(parts: [], role: "user");
 }
 
-@freezed
-class GenerateContentRequest with _$GenerateContentRequest {
-  const factory GenerateContentRequest({
-    required List<Content> contents,
-  }) = _GenerateContentRequest;
+class GenerateContentRequest {
+  final List<Content> contents;
+  final SafetySettings safetySettings;
+  final GenerationConfig? generationConfig;
+
+  const GenerateContentRequest({
+    required this.contents,
+    required this.safetySettings,
+    this.generationConfig,
+  });
 
   factory GenerateContentRequest.fromJson(Map<String, Object?> json) =>
-      _$GenerateContentRequestFromJson(json);
+      GenerateContentRequest(
+          contents: (json["contents"] as List<Map<String, Object?>>)
+              .map((c) => Content.fromJson(c))
+              .toList(),
+          safetySettings: SafetySettings.fromJson(
+              json["safetySettings"] as List<Map<String, Object?>>),
+          generationConfig: json["generationConfig"] == null
+              ? null
+              : GenerationConfig.fromJson(json));
+
+  Map<String, Object?> toJson() {
+    Map<String, Object?> m = {
+      "contents": contents.map((c) => c.toJson()).toList(),
+      "safetySettings": safetySettings.toJson(),
+    };
+    if (generationConfig != null) {
+      m["generationConfig"] = generationConfig!.toJson();
+    }
+    return m;
+  }
 }
 
 @freezed
@@ -124,32 +150,35 @@ class GenerateContentResponse with _$GenerateContentResponse {
       _$GenerateContentResponseFromJson(json);
 }
 
-Future<Content> generateContentSingleText(
-    {required String apiKey, required String text}) async {
-  final url = Uri.parse(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=$apiKey");
-  final resp = await post(url,
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(GenerateContentRequest(contents: [
-        Content(parts: [TextPart(text: text)])
-      ])));
-  if (resp.statusCode != 200) {
-    throw Exception("Failed to generate content: ${resp.body}");
-  }
-  final Map<String, Object?> json = jsonDecode(resp.body);
-  final data = GenerateContentResponse.fromJson(json);
-  return data.candidates[0].content;
-}
+// Future<Content> generateContentSingleText(
+//     {required String apiKey, required String text}) async {
+//   final url = Uri.parse(
+//       "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=$apiKey");
+//   final resp = await post(url,
+//       headers: {"Content-Type": "application/json"},
+//       body: jsonEncode(GenerateContentRequest(contents: [
+//         Content(parts: [TextPart(text: text)])
+//       ])));
+//   if (resp.statusCode != 200) {
+//     throw Exception("Failed to generate content: ${resp.body}");
+//   }
+//   final Map<String, Object?> json = jsonDecode(resp.body);
+//   final data = GenerateContentResponse.fromJson(json);
+//   return data.candidates[0].content;
+// }
 
 Future<Content> generateContent(
     {required String model,
-    required String apiKey,
+    required Settings settings,
     required List<Content> contents}) async {
   final url = Uri.parse(
-      "https://generativelanguage.googleapis.com/v1beta/models/$model:generateContent?key=$apiKey");
+      "https://generativelanguage.googleapis.com/v1beta/models/$model:generateContent?key=${settings.apiKey}");
   final resp = await post(url,
       headers: {"Content-Type": "application/json"},
-      body: jsonEncode(GenerateContentRequest(contents: contents)));
+      body: jsonEncode(GenerateContentRequest(
+          contents: contents,
+          safetySettings: settings.safetySettings,
+          generationConfig: settings.generationConfig)));
   if (resp.statusCode != 200) {
     throw Exception("Failed to generate content: ${resp.body}");
   }

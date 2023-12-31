@@ -20,20 +20,6 @@ Map<String, dynamic> _$$ContentImplToJson(_$ContentImpl instance) =>
       'role': instance.role,
     };
 
-_$GenerateContentRequestImpl _$$GenerateContentRequestImplFromJson(
-        Map<String, dynamic> json) =>
-    _$GenerateContentRequestImpl(
-      contents: (json['contents'] as List<dynamic>)
-          .map((e) => Content.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$$GenerateContentRequestImplToJson(
-        _$GenerateContentRequestImpl instance) =>
-    <String, dynamic>{
-      'contents': instance.contents,
-    };
-
 _$SafetyRatingImpl _$$SafetyRatingImplFromJson(Map<String, dynamic> json) =>
     _$SafetyRatingImpl(
       category: json['category'] as String,
