@@ -12,7 +12,16 @@ class MessageList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final contents = BlocProvider.of<ContentsCubit>(context, listen: true);
+    final scrollCtrl = ScrollController();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      scrollCtrl.animateTo(scrollCtrl.position.maxScrollExtent,
+          duration: const Duration(
+            milliseconds: 500,
+          ),
+          curve: Curves.linear);
+    });
     return ListView.builder(
+        controller: scrollCtrl,
         itemCount: contents.state.length,
         itemBuilder: (context, i) => Column(
               children: [

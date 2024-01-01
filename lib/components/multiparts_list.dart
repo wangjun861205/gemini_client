@@ -14,34 +14,43 @@ class MultipartsList extends StatelessWidget {
     return ReorderableListView(
         scrollDirection: Axis.horizontal,
         children: content.state.parts.indexed
-            .map((p) => SizedBox(
+            .map((p) => ConstrainedBox(
                 key: UniqueKey(),
-                width: 200,
+                constraints: const BoxConstraints(
+                  minHeight: 100,
+                  maxHeight: 100,
+                  minWidth: 100,
+                  maxWidth: 200,
+                ),
                 child: p.$2 is TextPart
                     ? Card(
-                        color: Colors.cyan[100],
-                        child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Stack(children: [
-                              Align(
-                                child: Text(
-                                  (p.$2 as TextPart).text,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              Positioned(
-                                  top: 0,
-                                  right: 0,
-                                  child: InkWell(
-                                      onTap: () => content.removePart(p.$1),
-                                      child: const Icon(Icons.close)))
-                            ])))
-                    : Stack(children: [
-                        Image.memory(
-                          base64Decode(
-                              (p.$2 as InlineDataPart).inlineData.data),
-                          width: 200,
-                          height: 100,
+                        color: Colors.grey[100],
+                        child: Stack(children: [
+                          Align(
+                              child: Padding(
+                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            child: Text(
+                              (p.$2 as TextPart).text,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 3,
+                            ),
+                          )),
+                          Positioned(
+                              top: 0,
+                              right: 0,
+                              child: InkWell(
+                                  onTap: () => content.removePart(p.$1),
+                                  child: const Icon(Icons.close)))
+                        ]))
+                    : Card(
+                        child: Stack(children: [
+                        ClipRRect(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                          child: Image.memory(
+                              base64Decode(
+                                  (p.$2 as InlineDataPart).inlineData.data),
+                              fit: BoxFit.fill),
                         ),
                         Positioned(
                             top: 0,
@@ -49,7 +58,7 @@ class MultipartsList extends StatelessWidget {
                             child: InkWell(
                                 onTap: () => content.removePart(p.$1),
                                 child: const Icon(Icons.close)))
-                      ])))
+                      ]))))
             .toList(),
         onReorder: (oldIdx, newIdx) {
           var parts = [...content.state.parts];

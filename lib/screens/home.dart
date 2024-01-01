@@ -34,23 +34,29 @@ class HomeScreenState extends State<HomeScreen> {
                   create: (_) => ContentCubit(content: Content.user())),
               BlocProvider(create: (_) => ModelCubit())
             ],
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          height: MediaQuery.of(context).size.height * 0.6,
-                          child: const MessageList()),
-                      SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          height: MediaQuery.of(context).size.height * 0.3,
-                          child: const Column(
-                              // mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(flex: 4, child: MultipartsList()),
-                                Expanded(flex: 6, child: MultipartsInputGroup())
-                              ])),
-                    ]))));
+                child: Builder(builder: (context) {
+                  final content =
+                      BlocProvider.of<ContentCubit>(context, listen: true);
+                  return SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Expanded(flex: 7, child: MessageList()),
+                            const Divider(height: 4),
+                            Expanded(
+                                flex: 3,
+                                child: content.state.parts.isEmpty
+                                    ? const MultipartsInputGroup()
+                                    : const Column(children: [
+                                        Expanded(
+                                            flex: 4, child: MultipartsList()),
+                                        Expanded(
+                                            flex: 6,
+                                            child: MultipartsInputGroup())
+                                      ])),
+                          ]));
+                }))));
   }
 }
 

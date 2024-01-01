@@ -19,57 +19,100 @@ class MultipartsInputGroup extends StatelessWidget {
     final model = BlocProvider.of<ModelCubit>(context, listen: true);
     final textCtrl = TextEditingController(text: "");
 
-    return Row(children: [
-      Expanded(flex: 6, child: TextField(controller: textCtrl, maxLines: 10)),
-      Expanded(
-          flex: 4,
-          child: Column(children: [
-            DropdownButton(
-                value: model.state,
-                items: const [
-                  DropdownMenuItem(
-                      value: "gemini-pro", child: Text("Gemini-Pro")),
-                  DropdownMenuItem(
-                      value: "gemini-pro-vision",
-                      child: Text("Gemini-Pro-Vision")),
-                ],
-                onChanged: (value) => value == "gemini-pro"
-                    ? model.switchToGeminiPro()
-                    : model.switchToGeminiProVision()),
-            TextButton(
-                onPressed: () {
-                  content.pushPart(TextPart(text: textCtrl.text));
-                  textCtrl.clear();
-                },
-                child: const Text("Add")),
-            if (model.state == "gemini-pro-vision")
-              TextButton(
-                  onPressed: () async {
-                    final picker = ImagePicker();
-                    final file =
-                        await picker.pickImage(source: ImageSource.gallery);
-                    if (file == null) {
-                      return;
-                    }
-                    final part = InlineDataPart(
-                        inlineData: InlineData(
-                            mimeType: file.mimeType ?? "",
-                            data: base64Encode(await file.readAsBytes())));
-                    content.pushPart(part);
-                  },
-                  child: const Text("Pick Image")),
-            TextButton(
-                onPressed: () async {
-                  history.pushContent(content.state);
-                  content.setParts([]);
-                  final resp = await generateContent(
-                      model: model.state,
-                      settings: settings.state,
-                      contents: history.state);
-                  history.pushContent(resp);
-                },
-                child: const Text("Send"))
-          ]))
-    ]);
+    void add() async {
+      content.pushPart(TextPart(text: textCtrl.text));
+      textCtrl.clear();
+    }
+
+    void send() async {
+      history.pushContent(content.state);
+      content.setParts([]);
+      final resp = await generateContent(
+          model: model.state,
+          settings: settings.state,
+          contents: history.state);
+      history.pushContent(resp);
+    }
+
+    void pickImage() async {
+      final picker = ImagePicker();
+      final file = await picker.pickImage(source: ImageSource.gallery);
+      if (file == null) {
+        return;
+      }
+      final part = InlineDataPart(
+          inlineData: InlineData(
+              mimeType: file.mimeType ?? "",
+              data: base64Encode(await file.readAsBytes())));
+      content.pushPart(part);
+    }
+
+    return TextField(
+        decoration: InputDecoration(
+            prefixIcon: InkWell(
+              onTap: () => model.state == "gemini-pro"
+                  ? model.switchToGeminiProVision()
+                  : model.switchToGeminiPro(),
+              child: Container(
+                width: 150,
+                height: 40,
+                margin: const EdgeInsets.only(left: 10, right: 10),
+                decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(20)),
+                    border: Border.all(width: 1, color: Colors.grey)),
+                child: Align(
+                    child: Text(model.state == "gemini-pro"
+                        ? "Gemini-Pro"
+                        : "Gemini-Pro-Vision")),
+              ),
+            ),
+            suffixIcon: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (model.state == "gemini-pro-vision")
+                    Padding(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        child: InkWell(
+                            onTap: pickImage,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(color: Colors.grey)),
+                              child: const Padding(
+                                  padding: EdgeInsets.all(5),
+                                  child: Icon(size: 30, Icons.image)),
+                            ))),
+                  Padding(
+                      padding: const EdgeInsets.only(left: 10, right: 10),
+                      child: InkWell(
+                          onTap: add,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(color: Colors.grey)),
+                            child: const Padding(
+                                padding: EdgeInsets.all(5),
+                                child: Icon(size: 30, Icons.plus_one)),
+                          ))),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10, right: 20),
+                    child: InkWell(
+                        onTap: send,
+                        child: Container(
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(color: Colors.grey)),
+                            child: const Padding(
+                                padding: EdgeInsets.all(5),
+                                child: InkWell(
+                                    child: Icon(size: 30, Icons.send))))),
+                  )
+                ]),
+            border: OutlineInputBorder(
+                borderSide: const BorderSide(width: 3, color: Colors.grey),
+                borderRadius: BorderRadius.circular(50))),
+        controller: textCtrl,
+        maxLines: null);
   }
 }
