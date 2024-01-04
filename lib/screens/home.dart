@@ -47,11 +47,17 @@ class HomeScreenState extends State<HomeScreen> {
                             Expanded(
                                 flex: 3,
                                 child: content.state.parts.isEmpty
-                                    ? const MultipartsInputGroup()
-                                    : const Column(children: [
+                                    ? Container(
+                                        margin: const EdgeInsets.only(top: 20),
+                                        child: const MultipartsInputGroup())
+                                    : Column(children: [
                                         Expanded(
-                                            flex: 4, child: MultipartsList()),
-                                        Expanded(
+                                            flex: 4,
+                                            child: Container(
+                                                margin: const EdgeInsets.only(
+                                                    top: 10, bottom: 10),
+                                                child: const MultipartsList())),
+                                        const Expanded(
                                             flex: 6,
                                             child: MultipartsInputGroup())
                                       ])),
