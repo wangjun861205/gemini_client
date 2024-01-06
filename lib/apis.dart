@@ -144,28 +144,11 @@ class PromptFeedback with _$PromptFeedback {
 class GenerateContentResponse with _$GenerateContentResponse {
   const factory GenerateContentResponse(
       {required List<Candidate> candidates,
-      required PromptFeedback promptFeedback}) = _GenerateContentResponse;
+      PromptFeedback? promptFeedback}) = _GenerateContentResponse;
 
   factory GenerateContentResponse.fromJson(Map<String, Object?> json) =>
       _$GenerateContentResponseFromJson(json);
 }
-
-// Future<Content> generateContentSingleText(
-//     {required String apiKey, required String text}) async {
-//   final url = Uri.parse(
-//       "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=$apiKey");
-//   final resp = await post(url,
-//       headers: {"Content-Type": "application/json"},
-//       body: jsonEncode(GenerateContentRequest(contents: [
-//         Content(parts: [TextPart(text: text)])
-//       ])));
-//   if (resp.statusCode != 200) {
-//     throw Exception("Failed to generate content: ${resp.body}");
-//   }
-//   final Map<String, Object?> json = jsonDecode(resp.body);
-//   final data = GenerateContentResponse.fromJson(json);
-//   return data.candidates[0].content;
-// }
 
 Future<Content> generateContent(
     {required String model,

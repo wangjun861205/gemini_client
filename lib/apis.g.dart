@@ -69,8 +69,10 @@ _$GenerateContentResponseImpl _$$GenerateContentResponseImplFromJson(
       candidates: (json['candidates'] as List<dynamic>)
           .map((e) => Candidate.fromJson(e as Map<String, dynamic>))
           .toList(),
-      promptFeedback: PromptFeedback.fromJson(
-          json['promptFeedback'] as Map<String, dynamic>),
+      promptFeedback: json['promptFeedback'] == null
+          ? null
+          : PromptFeedback.fromJson(
+              json['promptFeedback'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$GenerateContentResponseImplToJson(

@@ -104,7 +104,7 @@ class __$$ContentImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ContentImpl implements _Content {
+class _$ContentImpl with DiagnosticableTreeMixin implements _Content {
   const _$ContentImpl({required final List<Part> parts, this.role})
       : _parts = parts;
 
@@ -123,8 +123,17 @@ class _$ContentImpl implements _Content {
   final String? role;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'Content(parts: $parts, role: $role)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'Content'))
+      ..add(DiagnosticsProperty('parts', parts))
+      ..add(DiagnosticsProperty('role', role));
   }
 
   @override
@@ -264,7 +273,7 @@ class __$$SafetyRatingImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$SafetyRatingImpl implements _SafetyRating {
+class _$SafetyRatingImpl with DiagnosticableTreeMixin implements _SafetyRating {
   const _$SafetyRatingImpl({required this.category, required this.probability});
 
   factory _$SafetyRatingImpl.fromJson(Map<String, dynamic> json) =>
@@ -276,8 +285,17 @@ class _$SafetyRatingImpl implements _SafetyRating {
   final String probability;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'SafetyRating(category: $category, probability: $probability)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'SafetyRating'))
+      ..add(DiagnosticsProperty('category', category))
+      ..add(DiagnosticsProperty('probability', probability));
   }
 
   @override
@@ -462,7 +480,7 @@ class __$$CandidateImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$CandidateImpl implements _Candidate {
+class _$CandidateImpl with DiagnosticableTreeMixin implements _Candidate {
   const _$CandidateImpl(
       {required this.content,
       required this.finishReason,
@@ -488,8 +506,19 @@ class _$CandidateImpl implements _Candidate {
   }
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'Candidate(content: $content, finishReason: $finishReason, index: $index, safetyRatings: $safetyRatings)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'Candidate'))
+      ..add(DiagnosticsProperty('content', content))
+      ..add(DiagnosticsProperty('finishReason', finishReason))
+      ..add(DiagnosticsProperty('index', index))
+      ..add(DiagnosticsProperty('safetyRatings', safetyRatings));
   }
 
   @override
@@ -630,7 +659,9 @@ class __$$PromptFeedbackImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$PromptFeedbackImpl implements _PromptFeedback {
+class _$PromptFeedbackImpl
+    with DiagnosticableTreeMixin
+    implements _PromptFeedback {
   const _$PromptFeedbackImpl({required final List<SafetyRating> safetyRatings})
       : _safetyRatings = safetyRatings;
 
@@ -646,8 +677,16 @@ class _$PromptFeedbackImpl implements _PromptFeedback {
   }
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'PromptFeedback(safetyRatings: $safetyRatings)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'PromptFeedback'))
+      ..add(DiagnosticsProperty('safetyRatings', safetyRatings));
   }
 
   @override
@@ -702,7 +741,7 @@ GenerateContentResponse _$GenerateContentResponseFromJson(
 /// @nodoc
 mixin _$GenerateContentResponse {
   List<Candidate> get candidates => throw _privateConstructorUsedError;
-  PromptFeedback get promptFeedback => throw _privateConstructorUsedError;
+  PromptFeedback? get promptFeedback => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -716,9 +755,9 @@ abstract class $GenerateContentResponseCopyWith<$Res> {
           $Res Function(GenerateContentResponse) then) =
       _$GenerateContentResponseCopyWithImpl<$Res, GenerateContentResponse>;
   @useResult
-  $Res call({List<Candidate> candidates, PromptFeedback promptFeedback});
+  $Res call({List<Candidate> candidates, PromptFeedback? promptFeedback});
 
-  $PromptFeedbackCopyWith<$Res> get promptFeedback;
+  $PromptFeedbackCopyWith<$Res>? get promptFeedback;
 }
 
 /// @nodoc
@@ -736,24 +775,28 @@ class _$GenerateContentResponseCopyWithImpl<$Res,
   @override
   $Res call({
     Object? candidates = null,
-    Object? promptFeedback = null,
+    Object? promptFeedback = freezed,
   }) {
     return _then(_value.copyWith(
       candidates: null == candidates
           ? _value.candidates
           : candidates // ignore: cast_nullable_to_non_nullable
               as List<Candidate>,
-      promptFeedback: null == promptFeedback
+      promptFeedback: freezed == promptFeedback
           ? _value.promptFeedback
           : promptFeedback // ignore: cast_nullable_to_non_nullable
-              as PromptFeedback,
+              as PromptFeedback?,
     ) as $Val);
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $PromptFeedbackCopyWith<$Res> get promptFeedback {
-    return $PromptFeedbackCopyWith<$Res>(_value.promptFeedback, (value) {
+  $PromptFeedbackCopyWith<$Res>? get promptFeedback {
+    if (_value.promptFeedback == null) {
+      return null;
+    }
+
+    return $PromptFeedbackCopyWith<$Res>(_value.promptFeedback!, (value) {
       return _then(_value.copyWith(promptFeedback: value) as $Val);
     });
   }
@@ -768,10 +811,10 @@ abstract class _$$GenerateContentResponseImplCopyWith<$Res>
       __$$GenerateContentResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<Candidate> candidates, PromptFeedback promptFeedback});
+  $Res call({List<Candidate> candidates, PromptFeedback? promptFeedback});
 
   @override
-  $PromptFeedbackCopyWith<$Res> get promptFeedback;
+  $PromptFeedbackCopyWith<$Res>? get promptFeedback;
 }
 
 /// @nodoc
@@ -788,26 +831,28 @@ class __$$GenerateContentResponseImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? candidates = null,
-    Object? promptFeedback = null,
+    Object? promptFeedback = freezed,
   }) {
     return _then(_$GenerateContentResponseImpl(
       candidates: null == candidates
           ? _value._candidates
           : candidates // ignore: cast_nullable_to_non_nullable
               as List<Candidate>,
-      promptFeedback: null == promptFeedback
+      promptFeedback: freezed == promptFeedback
           ? _value.promptFeedback
           : promptFeedback // ignore: cast_nullable_to_non_nullable
-              as PromptFeedback,
+              as PromptFeedback?,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$GenerateContentResponseImpl implements _GenerateContentResponse {
+class _$GenerateContentResponseImpl
+    with DiagnosticableTreeMixin
+    implements _GenerateContentResponse {
   const _$GenerateContentResponseImpl(
-      {required final List<Candidate> candidates, required this.promptFeedback})
+      {required final List<Candidate> candidates, this.promptFeedback})
       : _candidates = candidates;
 
   factory _$GenerateContentResponseImpl.fromJson(Map<String, dynamic> json) =>
@@ -822,11 +867,20 @@ class _$GenerateContentResponseImpl implements _GenerateContentResponse {
   }
 
   @override
-  final PromptFeedback promptFeedback;
+  final PromptFeedback? promptFeedback;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'GenerateContentResponse(candidates: $candidates, promptFeedback: $promptFeedback)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'GenerateContentResponse'))
+      ..add(DiagnosticsProperty('candidates', candidates))
+      ..add(DiagnosticsProperty('promptFeedback', promptFeedback));
   }
 
   @override
@@ -862,9 +916,8 @@ class _$GenerateContentResponseImpl implements _GenerateContentResponse {
 
 abstract class _GenerateContentResponse implements GenerateContentResponse {
   const factory _GenerateContentResponse(
-          {required final List<Candidate> candidates,
-          required final PromptFeedback promptFeedback}) =
-      _$GenerateContentResponseImpl;
+      {required final List<Candidate> candidates,
+      final PromptFeedback? promptFeedback}) = _$GenerateContentResponseImpl;
 
   factory _GenerateContentResponse.fromJson(Map<String, dynamic> json) =
       _$GenerateContentResponseImpl.fromJson;
@@ -872,7 +925,7 @@ abstract class _GenerateContentResponse implements GenerateContentResponse {
   @override
   List<Candidate> get candidates;
   @override
-  PromptFeedback get promptFeedback;
+  PromptFeedback? get promptFeedback;
   @override
   @JsonKey(ignore: true)
   _$$GenerateContentResponseImplCopyWith<_$GenerateContentResponseImpl>

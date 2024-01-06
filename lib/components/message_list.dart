@@ -11,7 +11,7 @@ class MessageList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final contents = BlocProvider.of<ContentsCubit>(context, listen: true);
+    final history = BlocProvider.of<HistoryCubit>(context, listen: true);
     final scrollCtrl = ScrollController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       scrollCtrl.animateTo(scrollCtrl.position.maxScrollExtent,
@@ -22,16 +22,16 @@ class MessageList extends StatelessWidget {
     });
     return ListView.builder(
         controller: scrollCtrl,
-        itemCount: contents.state.length,
+        itemCount: history.state.contents.length,
         itemBuilder: (context, i) => Column(
               children: [
-                ...contents.state[i].parts
+                ...history.state.contents[i].parts
                     .map((p) => Align(
-                        alignment: contents.state[i].role == "model"
+                        alignment: history.state.contents[i].role == "model"
                             ? Alignment.centerLeft
                             : Alignment.centerRight,
                         child: Card(
-                            color: contents.state[i].role == "model"
+                            color: history.state.contents[i].role == "model"
                                 ? Colors.white
                                 : Colors.blue[300],
                             child: Padding(

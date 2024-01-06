@@ -16,20 +16,23 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final settings = BlocProvider.of<SettingsCubit>(context);
+    final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: AppBar(title: const Text("Home"), centerTitle: true, actions: [
           TextButton(
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => BlocProvider.value(
-                        value: settings, child: SettingsScreen())));
+                        value: settings, child: const SettingsScreen())));
               },
               child: const Text("Settings"))
         ]),
         body: Align(
             child: MultiBlocProvider(
                 providers: [
-              BlocProvider(create: (_) => ContentsCubit(contents: [])),
+              BlocProvider(
+                  create: (_) => HistoryCubit(
+                      history: const History(contents: [], validCount: 0))),
               BlocProvider(
                   create: (_) => ContentCubit(content: Content.user())),
               BlocProvider(create: (_) => ModelCubit())
@@ -38,30 +41,30 @@ class HomeScreenState extends State<HomeScreen> {
                   final content =
                       BlocProvider.of<ContentCubit>(context, listen: true);
                   return SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.9,
+                      width: screenWidth * 0.9,
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const Expanded(flex: 7, child: MessageList()),
-                            const Divider(height: 4),
-                            Expanded(
-                                flex: 3,
-                                child: content.state.parts.isEmpty
-                                    ? Container(
-                                        margin: const EdgeInsets.only(top: 20),
-                                        child: const MultipartsInputGroup())
-                                    : Column(children: [
-                                        Expanded(
-                                            flex: 4,
-                                            child: Container(
-                                                margin: const EdgeInsets.only(
-                                                    top: 10, bottom: 10),
-                                                child: const MultipartsList())),
-                                        const Expanded(
-                                            flex: 6,
-                                            child: MultipartsInputGroup())
-                                      ])),
-                          ]));
+                          children: content.state.parts.isEmpty
+                              ? [
+                                  const Expanded(child: MessageList()),
+                                  const Divider(height: 4),
+                                  Container(
+                                    margin: const EdgeInsets.only(
+                                        top: 5, bottom: 5),
+                                    child: const MultipartsInputGroup(),
+                                  ),
+                                ]
+                              : [
+                                  const Expanded(child: MessageList()),
+                                  const Divider(height: 4),
+                                  SizedBox(
+                                    height: screenWidth * 0.2,
+                                    child: const MultipartsList(),
+                                  ),
+                                  Container(
+                                      margin: const EdgeInsets.only(bottom: 5),
+                                      child: const MultipartsInputGroup())
+                                ]));
                 }))));
   }
 }

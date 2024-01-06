@@ -3,12 +3,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gemini_client/blocs/settings.dart';
+import 'package:gemini_client/components/api_key_input_row.dart';
 import 'package:gemini_client/components/generation_config_group.dart';
 import 'package:gemini_client/components/safety_settings_group.dart';
+import 'package:gemini_client/components/save_settings_button.dart';
 import 'package:gemini_client/screens/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({super.key});
   @override
   State<StatefulWidget> createState() {
     return SettingScreenState();
@@ -26,44 +29,33 @@ class SettingScreenState extends State<SettingsScreen> {
 
     final apiKeyController = TextEditingController(text: settings.state.apiKey);
     return Scaffold(
-        appBar: AppBar(title: const Text("Settings")),
+        appBar: AppBar(
+          title: const Text("Settings"),
+          centerTitle: true,
+        ),
         body: SingleChildScrollView(
             child: Align(
                 alignment: Alignment.center,
                 child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.6,
+                    width: MediaQuery.of(context).size.width * 0.8,
                     child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
                               margin: const EdgeInsets.only(bottom: 30),
-                              child: Row(children: [
-                                const Expanded(flex: 3, child: Text("API Key")),
-                                Expanded(
-                                    flex: 7,
-                                    child: TextField(
-                                        controller: apiKeyController,
-                                        onChanged: (value) =>
-                                            settings.setAPIKey(value))),
-                              ])),
+                              child:
+                                  APIKeyInputRow(textCtrl: apiKeyController)),
                           Container(
                               margin: const EdgeInsets.only(bottom: 30),
-                              child: SafetySettingsGroup()),
+                              child: const SafetySettingsGroup()),
                           Container(
                               margin: const EdgeInsets.only(bottom: 30),
-                              child: GenerationConfigGroup()),
-                          TextButton(
-                              onPressed: () {
-                                SharedPreferences.getInstance().then((prefs) {
-                                  prefs.setString(
-                                      "settings", jsonEncode(settings.state));
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => BlocProvider.value(
-                                          value: settings,
-                                          child: const HomeScreen())));
-                                });
-                              },
-                              child: const Text("Save"))
+                              child: const GenerationConfigGroup()),
+                          Container(
+                              margin: const EdgeInsets.only(bottom: 30),
+                              child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [SaveSettingsButton()]))
                         ])))));
   }
 }

@@ -1,36 +1,25 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gemini_client/apis.dart';
 
-class ContentsCubit extends Cubit<List<Content>> {
-  ContentsCubit({required List<Content> contents}) : super(contents);
+class History {
+  final List<Content> contents;
+  final int validCount;
 
-  // void pushPart(Part part) {
-  //   if (state.isEmpty) {
-  //     emit([
-  //       Content(parts: [part], role: "user")
-  //     ]);
-  //     return;
-  //   }
-  //   emit([
-  //     ...state.sublist(0, state.length - 1),
-  //     state.last.copyWith(parts: [...state.last.parts, part])
-  //   ]);
-  // }
+  const History({required this.contents, required this.validCount});
 
-  // void removePart(int i) => emit([
-  //       ...state.sublist(0, state.length - 1),
-  //       state.last.copyWith(parts: [
-  //         ...state.last.parts.sublist(0, i),
-  //         ...state.last.parts.sublist(i + 1)
-  //       ])
-  //     ]);
+  History copyWith({List<Content>? contents, int? validCount}) => History(
+      contents: contents ?? this.contents,
+      validCount: validCount ?? this.validCount);
+}
 
-  // void setParts(List<Part> parts) => emit([
-  //       ...state.sublist(0, state.length - 1),
-  //       state.last.copyWith(parts: parts)
-  //     ]);
+class HistoryCubit extends Cubit<History> {
+  HistoryCubit({required History history}) : super(history);
 
-  void pushContent(Content content) => emit([...state, content]);
+  void pushContent(Content content) =>
+      emit(state.copyWith(contents: [...state.contents, content]));
+
+  void setValidCount(int validCount) =>
+      emit(state.copyWith(validCount: validCount));
 }
 
 class ContentCubit extends Cubit<Content> {

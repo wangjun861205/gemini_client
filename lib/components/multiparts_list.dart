@@ -11,17 +11,13 @@ class MultipartsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final content = BlocProvider.of<ContentCubit>(context, listen: true);
+    final screenWidth = MediaQuery.of(context).size.width;
     return ReorderableListView(
         scrollDirection: Axis.horizontal,
         children: content.state.parts.indexed
-            .map((p) => ConstrainedBox(
+            .map((p) => SizedBox(
                 key: UniqueKey(),
-                constraints: const BoxConstraints(
-                  minHeight: 100,
-                  maxHeight: 100,
-                  minWidth: 100,
-                  maxWidth: 200,
-                ),
+                width: screenWidth * 0.2,
                 child: p.$2 is TextPart
                     ? Card(
                         color: Colors.grey[100],

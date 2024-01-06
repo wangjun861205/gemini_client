@@ -14,6 +14,8 @@ class IsOpenCubit extends Cubit<bool> {
 }
 
 class GenerationConfigGroup extends StatelessWidget {
+  const GenerationConfigGroup({super.key});
+
   @override
   Widget build(BuildContext context) {
     final settings = BlocProvider.of<SettingsCubit>(context, listen: true);
@@ -34,28 +36,24 @@ class GenerationConfigGroup extends StatelessWidget {
                 Container(
                   margin: const EdgeInsets.only(top: 20, bottom: 30),
                   child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.8,
                       child: Column(children: [
-                        Container(
-                            margin: const EdgeInsets.only(bottom: 30),
-                            child: StopSequencesRow()),
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 30),
-                          child: TemperatureRow(),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 30),
-                          child: MaxOutputTokensRow(),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 30),
-                          child: TopKRow(),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 30),
-                          child: TopPRow(),
-                        )
-                      ])),
+                    Container(
+                        margin: const EdgeInsets.only(bottom: 30),
+                        child: StopSequencesRow()),
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 30),
+                      child: TemperatureRow(),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 30),
+                      child: MaxOutputTokensRow(),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 30),
+                      child: TopKRow(),
+                    ),
+                    TopPRow(),
+                  ])),
                 )
             ],
           );
